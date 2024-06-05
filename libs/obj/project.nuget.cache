@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "fQz319DzncRwAroaU/apbXkUSsVIsLCxorXrYMrW13GuLT0t7vNqmj+9kaq0PASjleDx5eIynKnHMwXcRVLiKw==",
+  "dgSpecHash": "u4Ml+PekBogDQiXqMBocRIdVT9iYbU+LWN2XmT9TDPabfcOc8aLP54roLynl8R15h9LOthijB1b1yGjhMYzV2Q==",
   "success": true,
-  "projectFilePath": "C:\\Users\\stefa\\OneDrive\\Dokumente\\FH StPoelten BCC\\4. Semester\\CD\\EscapeRoom\\EscapeRoom\\libs\\libs.csproj",
+  "projectFilePath": "C:\\Users\\stefa\\OneDrive\\Dokumente\\FH StPoelten BCC\\4. Semester\\CD\\FinalProject\\FinalProject\\libs\\libs.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\stefa\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
   ],
