@@ -12,6 +12,12 @@
       "PosY": 5
     },
     {
+      "Type": 7,
+      "Color": 4,
+      "PosX": 2,
+      "PosY": 6
+    },
+    {
       "Type": 2,
       "Color": 7,
       "PosX": 2,

@@ -1,106 +1,226 @@
-﻿namespace libs;
-
-public enum Direction {
-    Up,
-    Down,
-    Left,
-    Right
-}
-
-public class GameObject : IGameObject, IMovement
+﻿namespace libs
 {
-    public bool Collidable{ get; set; }
-    public bool Movable{ get; set; }
-    public bool HasKey{ get; set; }
-
-    private char _charRepresentation = '#';
-    private ConsoleColor _color;
-
-    private int _posX;
-    private int _posY;
-
-    private int _prevPosX;
-    private int _prevPosY;
-
-    public GameObjectType Type;
-
-    public GameObject() {
-        this._posX = 5;
-        this._posY = 5;
-        this._color = ConsoleColor.Gray;
-    }
-
-    public GameObject(int posX, int posY){
-        this._posX = posX;
-        this._posY = posY;
-    }
-
-    public GameObject(int posX, int posY, ConsoleColor color){
-        this._posX = posX;
-        this._posY = posY;
-        this._color = color;
-    }
-
-    public char CharRepresentation
+    public enum Direction
     {
-        get { return _charRepresentation ; }
-        set { _charRepresentation = value; }
+        Up,
+        Down,
+        Left,
+        Right
     }
 
-    public ConsoleColor Color
+    public class GameObject : IGameObject, IMovement
     {
-        get { return _color; }
-        set { _color = value; }
-    }
+        public bool Collidable { get; set; }
+        public bool Movable { get; set; }
+        public bool HasKey { get; set; }
 
-    public int PosX
-    {
-        get { return _posX; }
-        set { _posX = value; }
-    }
+        private char _charRepresentation = '#';
+        private ConsoleColor _color;
 
-    public int PosY
-    {
-        get { return _posY; }
-        set { _posY = value; }
-    }
+        private int _posX;
+        private int _posY;
 
-    public int GetPrevPosY() {
-        return _prevPosY;
-    }
+        private int _prevPosX;
+        private int _prevPosY;
 
-    public int GetPrevPosX() {
-        return _prevPosX;
-    }
+        public GameObjectType Type;
 
-
-    public void Move(int dx, int dy) {
-
-        _prevPosX = _posX;
-        _prevPosY = _posY;
-        _posX += dx;
-        _posY += dy;
-        Console.WriteLine("New Position: (" + _posX + ", " + _posY + ")");
-    }
-
-    public void UndoMove() {
-        _posX = _prevPosX;
-        _posY = _prevPosY;
-
-        Console.WriteLine("Undo Position: (" + _posX + ", " + _posY + ")");
-    }
-    public void CheckBoxCollision(List<GameObject> boxes, GameObject player, Direction playerdirection, int dx, int dy)
-    {
-        int newPlayerPosX = player.PosX + dx;
-        int newPlayerPosY = player.PosY + dy;
-
-        foreach (var box in boxes)
+        public GameObject()
         {
-            int newBoxPosX = box.PosX;
-            int newBoxPosY = box.PosY;
+            this._posX = 5;
+            this._posY = 5;
+            this._color = ConsoleColor.Gray;
+        }
 
-            // Calculate new position of the box based on player's movement direction
-            switch (playerdirection)
+        public GameObject(int posX, int posY)
+        {
+            this._posX = posX;
+            this._posY = posY;
+        }
+
+        public GameObject(int posX, int posY, ConsoleColor color)
+        {
+            this._posX = posX;
+            this._posY = posY;
+            this._color = color;
+        }
+
+        public char CharRepresentation
+        {
+            get { return _charRepresentation; }
+            set { _charRepresentation = value; }
+        }
+
+        public ConsoleColor Color
+        {
+            get { return _color; }
+            set { _color = value; }
+        }
+
+        public int PosX
+        {
+            get { return _posX; }
+            set { _posX = value; }
+        }
+
+        public int PosY
+        {
+            get { return _posY; }
+            set { _posY = value; }
+        }
+
+        public int GetPrevPosY()
+        {
+            return _prevPosY;
+        }
+
+        public int GetPrevPosX()
+        {
+            return _prevPosX;
+        }
+
+        // DIALOG STUFF
+        public Dialog? dialog;
+
+        protected List<DialogNode> dialogNodes = new List<DialogNode>();
+
+        public void Move(int dx, int dy)
+        {
+            int targetX = _posX + dx;
+            int targetY = _posY + dy;
+
+            // Use LINQ to query objects in the target position
+            var collisionObjects = GameEngine.GetGameObjects()
+                .Where(e => e.PosX == targetX && e.PosY == targetY);
+
+            // If no obstacles found, move to the new position
+            if (!collisionObjects.Any())
+            {
+                _prevPosX = _posX;
+                _prevPosY = _posY;
+                _posX = targetX;
+                _posY = targetY;
+            }
+            else
+            {
+                // Check the type of the first collision object
+                var firstCollisionObject = collisionObjects.First();
+                if (firstCollisionObject.Type == GameObjectType.Key || firstCollisionObject.Type == GameObjectType.Goal)
+                {
+                    // If the object is a key or a door, do nothing
+                    return;
+                }
+                else if (firstCollisionObject.HasDialog())
+                {
+                    // Otherwise, start dialog if it exists
+                    firstCollisionObject.dialog?.Start();
+                }
+            }
+
+            Console.WriteLine("New Position: (" + _posX + ", " + _posY + ")");
+        }
+
+        public bool HasDialog()
+        {
+            return dialog != null;
+        }
+
+        public void UndoMove()
+        {
+            _posX = _prevPosX;
+            _posY = _prevPosY;
+
+            Console.WriteLine("Undo Position: (" + _posX + ", " + _posY + ")");
+        }
+
+        public void CheckBoxCollision(List<GameObject> boxes, GameObject player, Direction playerdirection, int dx, int dy)
+        {
+            int newPlayerPosX = player.PosX + dx;
+            int newPlayerPosY = player.PosY + dy;
+
+            foreach (var box in boxes)
+            {
+                int newBoxPosX = box.PosX;
+                int newBoxPosY = box.PosY;
+
+                // Calculate new position of the box based on player's movement direction
+                switch (playerdirection)
+                {
+                    case Direction.Up:
+                        newBoxPosY--;
+                        break;
+                    case Direction.Down:
+                        newBoxPosY++;
+                        break;
+                    case Direction.Left:
+                        newBoxPosX--;
+                        break;
+                    case Direction.Right:
+                        newBoxPosX++;
+                        break;
+                    default:
+                        break;
+                }
+
+                // Check for collision between player and box
+                if (newPlayerPosX == box.PosX && newPlayerPosY == box.PosY)
+                {
+                    // Check if new box position is within game bounds and not colliding with other objects
+                    bool canMoveBox = true;
+                    foreach (var otherBox in boxes)
+                    {
+                        if (otherBox != box && (newBoxPosX == otherBox.PosX && newBoxPosY == otherBox.PosY))
+                        {
+                            canMoveBox = false;
+                            break;
+                        }
+                    }
+
+                    if (canMoveBox)
+                    {
+                        // Update box position
+                        box.PosX = newBoxPosX;
+                        box.PosY = newBoxPosY;
+                    }
+                }
+            }
+        }
+
+        public void CheckCollisionWithKey(List<GameObject> keys, GameObject player, Direction playerDirection, int dx, int dy)
+        {
+            foreach (var key in keys)
+            {
+                if (player.PosX == key.PosX && player.PosY == key.PosY)
+                {
+                    player.HasKey = true;
+                    key.PosX = -1; // Move the key out of the game area
+                    break;
+                }
+            }
+        }
+
+        // Check if the pushed box collides with another box
+        public void CheckCollisionWithAllBoxes(List<GameObject> boxes, GameObject player, Direction playerDirection, int dx, int dy)
+        {
+            // Calculate the new position of the player based on the movement direction
+            int newPlayerPosX = player.PosX + dx;
+            int newPlayerPosY = player.PosY + dy;
+
+            // Calculate the new position of the pushed box based on the movement direction
+            int newBoxPosX = newPlayerPosX;
+            int newBoxPosY = newPlayerPosY;
+
+            // Check if there's a box at the new position after player's movement
+            GameObject boxToPush = boxes.FirstOrDefault(box => box.PosX == newBoxPosX && box.PosY == newBoxPosY);
+
+            // If there's no box to push, exit the method
+            if (boxToPush == null)
+            {
+                return;
+            }
+
+            // Calculate the new position of the pushed box based on the player's movement direction
+            switch (playerDirection)
             {
                 case Direction.Up:
                     newBoxPosY--;
@@ -118,115 +238,38 @@ public class GameObject : IGameObject, IMovement
                     break;
             }
 
-            // Check for collision between player and box
-            if (newPlayerPosX == box.PosX && newPlayerPosY == box.PosY)
+            // Check if the new position of the pushed box collides with another box
+            bool isCollisionWithOtherBox = boxes.Any(box => box != boxToPush && box.PosX == newBoxPosX && box.PosY == newBoxPosY);
+
+            // Check if the new position of the pushed box is empty
+            bool isBoxDestinationEmpty = boxes.All(box => box != boxToPush || (box.PosX != newBoxPosX && box.PosY != newBoxPosY));
+
+            // If there's a collision with another box or the box destination is not empty, reverse the player's movement
+            if (isCollisionWithOtherBox || !isBoxDestinationEmpty)
             {
-                // Check if new box position is within game bounds and not colliding with other objects
-                bool canMoveBox = true;
-                foreach (var otherBox in boxes)
+                switch (playerDirection)
                 {
-                    if (otherBox != box && (newBoxPosX == otherBox.PosX && newBoxPosY == otherBox.PosY))
-                    {
-                        canMoveBox = false;
+                    case Direction.Up:
+                        player.Move(0, 1);
                         break;
-                    }
+                    case Direction.Down:
+                        player.Move(0, -1);
+                        break;
+                    case Direction.Left:
+                        player.Move(1, 0);
+                        break;
+                    case Direction.Right:
+                        player.Move(-1, 0);
+                        break;
+                    default:
+                        break;
                 }
-
-                if (canMoveBox)
-                {
-                    // Update box position
-                    box.PosX = newBoxPosX;
-                    box.PosY = newBoxPosY;
-                }
+                return;
             }
+
+            // Update the position of the pushed box
+            boxToPush.PosX = newBoxPosX;
+            boxToPush.PosY = newBoxPosY;
         }
     }
-
-    public void CheckCollisionWithKey(List<GameObject> keys, GameObject player, Direction playerDirection, int dx, int dy)
-    {
-        foreach (var key in keys)
-        {
-            if (player.PosX == key.PosX && player.PosY == key.PosY)
-            {
-                player.HasKey = true;
-                   key.PosX = -1;
-                //set player boolean to true
-                break;
-
-            }
-        }
-    }
-
-  //check if the pushed box collides with another box
-  public void CheckCollisionWithAllBoxes(List<GameObject> boxes, GameObject player, Direction playerDirection, int dx, int dy)
-  {
-      // Calculate the new position of the player based on the movement direction
-      int newPlayerPosX = player.PosX + dx;
-      int newPlayerPosY = player.PosY + dy;
-
-      // Calculate the new position of the pushed box based on the movement direction
-      int newBoxPosX = newPlayerPosX;
-      int newBoxPosY = newPlayerPosY;
-
-      // Check if there's a box at the new position after player's movement
-      GameObject boxToPush = boxes.FirstOrDefault(box => box.PosX == newBoxPosX && box.PosY == newBoxPosY);
-
-      // If there's no box to push, exit the method
-      if (boxToPush == null)
-      {
-          return;
-      }
-
-      // Calculate the new position of the pushed box based on the player's movement direction
-      switch (playerDirection)
-      {
-          case Direction.Up:
-              newBoxPosY--;
-              break;
-          case Direction.Down:
-              newBoxPosY++;
-              break;
-          case Direction.Left:
-              newBoxPosX--;
-              break;
-          case Direction.Right:
-              newBoxPosX++;
-              break;
-          default:
-              break;
-      }
-
-      // Check if the new position of the pushed box collides with another box
-      bool isCollisionWithOtherBox = boxes.Any(box => box != boxToPush && box.PosX == newBoxPosX && box.PosY == newBoxPosY);
-
-      // Check if the new position of the pushed box is empty
-      bool isBoxDestinationEmpty = boxes.All(box => box != boxToPush || (box.PosX != newBoxPosX && box.PosY != newBoxPosY));
-
-      // If there's a collision with another box or the box destination is not empty, reverse the player's movement
-      if (isCollisionWithOtherBox || !isBoxDestinationEmpty)
-      {
-          switch (playerDirection)
-          {
-              case Direction.Up:
-                  player.Move(0, 1);
-                  break;
-              case Direction.Down:
-                  player.Move(0, -1);
-                  break;
-              case Direction.Left:
-                  player.Move(1, 0);
-                  break;
-              case Direction.Right:
-                  player.Move(-1, 0);
-                  break;
-              default:
-                  break;
-          }
-          return;
-      }
-
-      // Update the position of the pushed box
-      boxToPush.PosX = newBoxPosX;
-      boxToPush.PosY = newBoxPosY;
-  }
 }

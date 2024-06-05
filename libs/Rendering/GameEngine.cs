@@ -1,8 +1,6 @@
 ﻿using System.Reflection.Metadata.Ecma335;
 using System.Text.Json.Nodes;
 using Newtonsoft.Json;
-
-
 namespace libs;
 using libs.Rendering;
 using System.Security.Cryptography;
@@ -121,6 +119,13 @@ public sealed class GameEngine
     {
         return _focusedObject;
     }
+
+public static List<GameObject> GetGameObjects()
+{
+    return Instance.gameObjects
+        .Where(obj => obj.Type != GameObjectType.Key && obj.Type != GameObjectType.Goal)
+        .ToList();
+}
 
     public GameObject GetBox()
     {
@@ -349,7 +354,7 @@ public void CheckWallCollision(GameObject player, Direction playerDirection)
                     return false; // Return false to indicate that the level cannot be finished due to error
                 }
 //                 Console.WriteLine($"Player has key: {player.HasKey}");
-//                 Console.WriteLine($"Current Level Index: {currentLevelIndex}");
+                 Console.WriteLine($"Current Level Index: {currentLevelIndex}");
 //                 Console.WriteLine($"Level File Paths Length: {levelFilePaths.Length}");
 
                 // Check if the player is on the goal and has the key
