@@ -84,41 +84,36 @@
 
         protected List<DialogNode> dialogNodes = new List<DialogNode>();
 
-        public void Move(int dx, int dy)
-        {
-            int targetX = _posX + dx;
-            int targetY = _posY + dy;
+       public void Move(int dx, int dy)
+       {
+           int targetX = _posX + dx;
+           int targetY = _posY + dy;
 
-            // Use LINQ to query objects in the target position
-            var collisionObjects = GameEngine.GetGameObjects()
-                .Where(e => e.PosX == targetX && e.PosY == targetY);
+           var collisionObjects = GameEngine.GetGameObjects()
+               .Where(e => e.PosX == targetX && e.PosY == targetY);
 
-            // If no obstacles found, move to the new position
-            if (!collisionObjects.Any())
-            {
-                _prevPosX = _posX;
-                _prevPosY = _posY;
-                _posX = targetX;
-                _posY = targetY;
-            }
-            else
-            {
-                // Check the type of the first collision object
-                var firstCollisionObject = collisionObjects.First();
-                if (firstCollisionObject.Type == GameObjectType.Key || firstCollisionObject.Type == GameObjectType.Goal)
-                {
-                    // If the object is a key or a door, do nothing
-                    return;
-                }
-                else if (firstCollisionObject.HasDialog())
-                {
-                    // Otherwise, start dialog if it exists
-                    firstCollisionObject.dialog?.Start();
-                }
-            }
+           if (!collisionObjects.Any())
+           {
+               _prevPosX = _posX;
+               _prevPosY = _posY;
+               _posX = targetX;
+               _posY = targetY;
+           }
+           else
+           {
+               var firstCollisionObject = collisionObjects.First();
+               if (firstCollisionObject.Type == GameObjectType.Key || firstCollisionObject.Type == GameObjectType.Goal)
+               {
+                   return;
+               }
+               else if (firstCollisionObject.HasDialog())
+               {
+                   firstCollisionObject.dialog?.Start();
+               }
+           }
 
-            Console.WriteLine("New Position: (" + _posX + ", " + _posY + ")");
-        }
+           Console.WriteLine("New Position: (" + _posX + ", " + _posY + ")");
+       }
 
         public bool HasDialog()
         {

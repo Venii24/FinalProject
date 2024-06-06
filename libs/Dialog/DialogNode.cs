@@ -9,6 +9,8 @@ public class DialogNode {
     public string Text { get; set; }
     public List<Response> Responses = new List<Response>();
 
+    public DialogNode () {
+    }
     public DialogNode (string text) {
         Text = text;
     }

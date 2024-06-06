@@ -451,6 +451,7 @@ public void CheckWallCollision(GameObject player, Direction playerDirection)
         // Dialog Box
         dialogBox.Show(dialogMessage);
 
+
     }
 
     private void RenderTimer()

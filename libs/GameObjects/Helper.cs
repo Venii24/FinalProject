@@ -1,38 +1,40 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using Newtonsoft.Json;
+
 namespace libs
 {
     public class Helper : GameObject
     {
         public Helper() : base()
         {
-
             Type = GameObjectType.Helper;
             CharRepresentation = '?';
             Color = ConsoleColor.DarkGreen;
 
-             //TODO Import and add those from JSON
-                    DialogNode node1 = new DialogNode("Hello, how can I help you?");
-                    DialogNode node2 = new DialogNode("Sure, what information do you need?");
-                    DialogNode node3 = new DialogNode("Sorry, I can't help with that.");
-                    DialogNode node4 = new DialogNode("Here is the information you requested.");
-                    DialogNode node5 = new DialogNode("Goodbye!");
+            // Load dialog from JSON
+            string jsonFilePath = @"C:\Users\stefa\OneDrive\Dokumente\FH StPoelten BCC\4. Semester\CD\FinalProject\FinalProject\libs\dialog.json";
+            string jsonString = File.ReadAllText(jsonFilePath);
+            List<DialogNode> dialogNodes = JsonConvert.DeserializeObject<List<DialogNode>>(jsonString);
 
-                    // Adding responses to nodes
-                    node1.AddResponse("I need some information.", node2);
-                    node1.AddResponse("Nothing, thanks.", node5);
+            // Initialize dialog
+            if (dialogNodes != null && dialogNodes.Count > 0)
+            {
+                Dialog = new Dialog(dialogNodes[0]);
+            }
+            else
+            {
+                throw new Exception("Failed to load dialog from JSON.");
+            }
+        }
 
-                    node2.AddResponse("Tell me more.", node4);
-                    node2.AddResponse("Nevermind.", node3);
+        public Dialog Dialog { get; private set; }
 
-                    node3.AddResponse("Okay, goodbye.", node5);
-                    node4.AddResponse("Thanks!", node5);
+        public virtual bool HasDialog()
+        {
+            return Dialog != null;
 
-                    dialogNodes.Add(node1);
-                    dialogNodes.Add(node2);
-                    dialogNodes.Add(node3);
-                    dialogNodes.Add(node4);
-                    dialogNodes.Add(node5);
-
-                    dialog = new Dialog(node1);
         }
     }
 }
