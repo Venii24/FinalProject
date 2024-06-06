@@ -1,0 +1,56 @@
+[
+  {
+    "dialogID": "1",
+    "Text": "Hello, do you need some help?",
+    "Responses": [
+      {
+        "ResponseText": "Yes please, I do not know what to do",
+        "NextNode": {
+          "dialogID": "2",
+          "Text": "Sure, did you already find the key?",
+          "Responses": [
+            {
+              "ResponseText": "Yes",
+              "NextNode": {
+                "dialogID": "4",
+                "Text": "Great! Look for the door and open it with the key.",
+                "Responses": [
+                  {
+                    "ResponseText": "Thanks!",
+                    "NextNode": {
+                      "dialogID": "5",
+                      "Text": "Goodbye!"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "ResponseText": "No",
+              "NextNode": {
+                "dialogID": "3",
+                "Text": "You should look for the key first. It is hidden in the room, then you can open the door.",
+                "Responses": [
+                  {
+                    "ResponseText": "Okay, goodbye.",
+                    "NextNode": {
+                      "dialogID": "5",
+                      "Text": "Goodbye!"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "ResponseText": "No everything is fine, thanks",
+        "NextNode": {
+          "dialogID": "5",
+          "Text": "Goodbye!"
+        }
+      }
+    ]
+  }
+]

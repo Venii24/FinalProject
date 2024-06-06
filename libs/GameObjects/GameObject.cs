@@ -13,6 +13,7 @@
         public bool Collidable { get; set; }
         public bool Movable { get; set; }
         public bool HasKey { get; set; }
+        public bool HasDialogText { get; set; }
 
         private char _charRepresentation = '#';
         private ConsoleColor _color;
@@ -80,8 +81,8 @@
         }
 
         // DIALOG STUFF
-        public Dialog? dialog;
 
+        public Dialog dialog { get; protected set; }
         protected List<DialogNode> dialogNodes = new List<DialogNode>();
 
         public void Move(int dx, int dy)
@@ -94,33 +95,48 @@
                 .Where(e => e.PosX == targetX && e.PosY == targetY);
 
             // If no obstacles found, move to the new position
+
             if (!collisionObjects.Any())
             {
                 _prevPosX = _posX;
                 _prevPosY = _posY;
                 _posX = targetX;
                 _posY = targetY;
+                Console.WriteLine("no collision");
+            }
+            else if (collisionObjects.Any(e => e.HasDialogText))
+            {
+                //start Dialog of the object
+                collisionObjects.First().dialog?.Start();
+                return;
             }
             else
             {
+            Console.WriteLine("Dialog started for object: " + this.GetType().Name);
                 // Check the type of the first collision object
                 var firstCollisionObject = collisionObjects.First();
-                if (firstCollisionObject.Type == GameObjectType.Key || firstCollisionObject.Type == GameObjectType.Goal)
+                if (firstCollisionObject.Type == GameObjectType.Helper)
                 {
-                    // If the object is a key or a door, do nothing
-                    return;
+                   firstCollisionObject.dialog?.Start();
                 }
-                else if (firstCollisionObject.HasDialog())
+               else if (firstCollisionObject.HasDialog())
                 {
-                    // Otherwise, start dialog if it exists
+                var helper = GameEngine.GetGameObjects().FirstOrDefault(e => e.Type == GameObjectType.Helper);
+                helper.dialog?.Start();
+                helper.posX = -1;
+                    //Remove the object from the list
+                    firstCollisionObject.posX = -1;
+
                     firstCollisionObject.dialog?.Start();
+
+
+                }
+                else if (firstCollisionObject.Type == GameObjectType.Key|| firstCollisionObject.Type == GameObjectType.Goal) {
                 }
             }
-
-            Console.WriteLine("New Position: (" + _posX + ", " + _posY + ")");
         }
 
-        public bool HasDialog()
+        public virtual bool HasDialog()
         {
             return dialog != null;
         }

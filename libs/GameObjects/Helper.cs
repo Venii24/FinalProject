@@ -1,38 +1,44 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using Newtonsoft.Json;
+
 namespace libs
 {
     public class Helper : GameObject
     {
         public Helper() : base()
         {
-
             Type = GameObjectType.Helper;
             CharRepresentation = '?';
             Color = ConsoleColor.DarkGreen;
+            HasDialogText = true;
 
-             //TODO Import and add those from JSON
-                    DialogNode node1 = new DialogNode("Hello, do you need some help?");
-                    DialogNode node2 = new DialogNode("Sure, did you already find the key?");
-                    DialogNode node3 = new DialogNode("You should look for the key first. It is hidden in the room, then you can open the door.");
-                    DialogNode node4 = new DialogNode("Great! Look for the door and open it with the key.");
-                    DialogNode node5 = new DialogNode("Goodbye!");
+            // Load dialog from JSON
+            string jsonFilePath = Path.Combine("..", "libs", "dialog.json");
+            string jsonString = File.ReadAllText(jsonFilePath);
+            List<DialogNode> dialogNodes = JsonConvert.DeserializeObject<List<DialogNode>>(jsonString);
 
-                    // Adding responses to nodes
-                    node1.AddResponse("Yes please, I do not know what to do", node2);
-                    node1.AddResponse("No everything is fine, thanks", node5);
+            // Initialize dialog
+            if (dialogNodes != null && dialogNodes.Count > 0)
+            {
+                dialog = new Dialog(dialogNodes[0]); // Assuming the first node is the starting point
+            }
+            else
+            {
+                throw new Exception("Failed to load dialog from JSON.");
+                Console.WriteLine("Failed to load dialog from JSON.");
+            }
 
-                    node2.AddResponse("Yes", node4);
-                    node2.AddResponse("No", node3);
 
-                    node3.AddResponse("Okay, goodbye.", node5);
-                    node4.AddResponse("Thanks!", node5);
+        }
 
-                    dialogNodes.Add(node1);
-                    dialogNodes.Add(node2);
-                    dialogNodes.Add(node3);
-                    dialogNodes.Add(node4);
-                    dialogNodes.Add(node5);
+        public Dialog dialog { get; private set; }
 
-                    dialog = new Dialog(node1);
+        // Override the HasDialog method
+        public override bool HasDialog()
+        {
+            return dialog != null;
         }
     }
 }

@@ -127,6 +127,18 @@ public static List<GameObject> GetGameObjects()
         .ToList();
 }
 
+public GameObject GetHelper()
+{
+    foreach (var gameObject in gameObjects)
+          {
+              if (gameObject is Helper)
+              {
+                  return gameObject;
+              }
+          }
+          return null;
+}
+
     public GameObject GetBox()
     {
         foreach (var gameObject in gameObjects)
@@ -343,6 +355,7 @@ public void CheckWallCollision(GameObject player, Direction playerDirection)
 
     public bool finishLevel(GameObject goal, GameObject key, GameObject player)
             {
+
                 if (key == null)
                 {
                     Console.WriteLine("Error: The key object is null.");
@@ -356,6 +369,8 @@ public void CheckWallCollision(GameObject player, Direction playerDirection)
 //                 Console.WriteLine($"Player has key: {player.HasKey}");
                  Console.WriteLine($"Current Level Index: {currentLevelIndex}");
 //                 Console.WriteLine($"Level File Paths Length: {levelFilePaths.Length}");
+
+
 
                 // Check if the player is on the goal and has the key
                if (player.PosX == goal.PosX && player.PosY == goal.PosY && !player.HasKey)
