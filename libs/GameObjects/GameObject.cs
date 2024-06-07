@@ -96,19 +96,22 @@
 
             // If no obstacles found, move to the new position
 
-            if (!collisionObjects.Any())
+            if (collisionObjects.Any(e => e.HasDialogText))
+            {
+                //start Dialog of the object
+                collisionObjects.First().dialog?.Start();
+                //clear console
+                Console.Clear();
+
+            }
+
+            else if (!collisionObjects.Any())
             {
                 _prevPosX = _posX;
                 _prevPosY = _posY;
                 _posX = targetX;
                 _posY = targetY;
                 Console.WriteLine("no collision");
-            }
-            else if (collisionObjects.Any(e => e.HasDialogText))
-            {
-                //start Dialog of the object
-                collisionObjects.First().dialog?.Start();
-                return;
             }
             else
             {
@@ -123,11 +126,7 @@
                 {
                 var helper = GameEngine.GetGameObjects().FirstOrDefault(e => e.Type == GameObjectType.Helper);
                 helper.dialog?.Start();
-                helper.posX = -1;
-                    //Remove the object from the list
-                    firstCollisionObject.posX = -1;
-
-                    firstCollisionObject.dialog?.Start();
+                firstCollisionObject.dialog?.Start();
 
 
                 }
@@ -147,6 +146,22 @@
             _posY = _prevPosY;
 
             Console.WriteLine("Undo Position: (" + _posX + ", " + _posY + ")");
+        }
+int collisionCount = 0;
+        public void CheckHelperCollision(GameObject helper, GameObject player, Direction playerDirection, int dx, int dy)
+        {
+
+            int newPlayerPosX = player.PosX + dx;
+            int newPlayerPosY = player.PosY + dy;
+Console.WriteLine(collisionCount);
+
+                if (newPlayerPosX == helper.PosX && newPlayerPosY == helper.PosY)
+                {
+                    helper.dialog?.Start();
+                    collisionCount++;
+
+                }
+
         }
 
         public void CheckBoxCollision(List<GameObject> boxes, GameObject player, Direction playerdirection, int dx, int dy)

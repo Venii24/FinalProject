@@ -28,6 +28,7 @@ public sealed class InputHandler{
         List<GameObject> boxes = engine.GetBoxObjects();
         GameObject wall = engine.GetWallObject();
         List<GameObject> keys= engine.GetKeyObjects();
+        GameObject helper = engine.GetHelper();
 
 
 
@@ -46,6 +47,7 @@ public sealed class InputHandler{
                     focusedObject.CheckCollisionWithAllBoxes(boxes, player, Direction.Up, dx, dy);
                     engine.CheckWallCollision(player, Direction.Up);
                     focusedObject.CheckCollisionWithKey(keys, player, Direction.Up, dx, dy);
+                    focusedObject.CheckHelperCollision(helper, player, Direction.Up, dx, dy);
 
                     break;
                 case ConsoleKey.DownArrow:
@@ -55,6 +57,7 @@ public sealed class InputHandler{
                     focusedObject.CheckCollisionWithAllBoxes(boxes, player, Direction.Down, dx, dy);
                     engine.CheckWallCollision(player, Direction.Down);
                     focusedObject.CheckCollisionWithKey(keys, player, Direction.Down, dx, dy);
+                    focusedObject.CheckHelperCollision(helper, player, Direction.Down, dx, dy);
                     break;
                 case ConsoleKey.LeftArrow:
                     dx = -1;
@@ -63,6 +66,7 @@ public sealed class InputHandler{
                     focusedObject.CheckCollisionWithAllBoxes(boxes, player, Direction.Left, dx, dy);
                     engine.CheckWallCollision(player, Direction.Left);
                     focusedObject.CheckCollisionWithKey(keys, player, Direction.Left, dx, dy);
+                    focusedObject.CheckHelperCollision(helper, player, Direction.Left, dx, dy);
                     break;
                 case ConsoleKey.RightArrow:
                     dx = 1;
@@ -71,6 +75,7 @@ public sealed class InputHandler{
                     focusedObject.CheckCollisionWithAllBoxes(boxes, player, Direction.Right, dx, dy);
                     engine.CheckWallCollision(player, Direction.Right);
                     focusedObject.CheckCollisionWithKey(keys, player, Direction.Right, dx, dy);
+                    focusedObject.CheckHelperCollision(helper, player, Direction.Right, dx, dy);
                     break;
                 case ConsoleKey.D:
                   Console.WriteLine("Undo");
