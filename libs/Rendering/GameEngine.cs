@@ -9,18 +9,18 @@ using Newtonsoft.Json;
 // Singleton class that manages the game state
 public sealed class GameEngine
 {
-    private static GameEngine? _instance;
-    private IGameObjectFactory gameObjectFactory;
-    private Stack<GameState> gameStates;
-    private int currentLevelIndex = 0; // Assume the initial level index is 0
-    private string[] levelFilePaths = { "level00.json", "level01.json", "level02.json" };
-    private bool timerStopped = false;
+   private static GameEngine? _instance;
+   private IGameObjectFactory gameObjectFactory;
+   private Stack<GameState> gameStates;
+   private int currentLevelIndex = 0; // Assume the initial level index is 0
+   private string[] levelFilePaths = { "level00.json", "level01.json", "level02.json" };
+   private bool timerStopped = false;
+   private bool gameStarted = false;
 
-
-    private int moveCount;
-     private DateTime startTime;
-     private TimeSpan countdownDuration = TimeSpan.FromMinutes(4);
-     private TimeSpan countdown;
+   private int moveCount;
+   private DateTime startTime;
+   private TimeSpan countdownDuration = TimeSpan.FromMinutes(4);
+   private TimeSpan countdown;
 
     public static GameEngine Instance
     {
@@ -54,6 +54,60 @@ public sealed class GameEngine
 
 
     private List<GameObject> gameObjects = new List<GameObject>();
+
+
+    public void ShowMenu()
+    {
+       Console.Clear();
+       Console.ForegroundColor = ConsoleColor.Blue;
+       Console.WriteLine("Welcome to the Dungeon Escape Game!\n");
+       Console.WriteLine("Your mission: locate three keys and navigate through each level's challenges. \nYour character '⯈' holds the key to your escape. Push boxes ⌸, find keys ⚿, and outsmart traps as you journey through this maze of dungeons.");
+       Console.WriteLine("Feeling stuck? Don't worry! Seek guidance from the helper '?' if you're ever unsure of your next move.\nAdventure awaits.\n");
+       Console.ForegroundColor = ConsoleColor.Green;
+       Console.WriteLine("Press Enter to proceed.");
+
+
+        // Wait for the player to press Enter
+        while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
+
+        // Ask if the player wants to start the game
+       Console.ForegroundColor = ConsoleColor.Blue;
+        Console.WriteLine("Do you want to start the game? Press Y for yes and N for no");
+       Console.ResetColor();
+
+
+        // Get the player's response
+        ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+
+        if (keyInfo.Key == ConsoleKey.Y)
+        {
+            StartGame();
+        }
+        else if (keyInfo.Key == ConsoleKey.N)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("Maybe you want to try next time.\nPress any key to exit...");
+            Console.ResetColor();
+            Console.ReadKey(true);
+            ShowMenu();
+        }
+        else
+        {
+            // If the input is neither Y nor N, show an error message and retry
+            Console.WriteLine("Invalid input. Press Y to start the game or N to exit.");
+            ShowMenu(); // Recursive call to show the menu again
+        }
+    }
+
+
+    private void StartGame()
+        {
+            Setup();
+            gameStarted = true;
+            startTime = DateTime.Now;
+            // Continue with the game initialization
+        }
+
 
   public void SaveGame(string filePath)
   {
