@@ -13,17 +13,18 @@
       "PosY": 1
     },
     {
+      "Type": 7,
+      "Color": 4,
+      "PosX": 19,
+      "PosY": 1
+    },
+    {
       "Type": 2,
       "Color": 7,
       "PosX": 4,
       "PosY": 4
     },
     {
-      "Type": 2,
-      "Color": 7,
-      "PosX": 5,
-      "PosY": 5
-    },  {
       "Type": 1,
       "PosX": 5,
       "PosY": 6,
@@ -68,10 +69,17 @@
       "Color": 7,
       "PosX": 3,
       "PosY": 6
-    }, {
+    },
+    {
       "Type": 2,
       "Color": 7,
       "PosX": 3,
+      "PosY": 7
+    },
+    {
+      "Type": 6,
+      "Color": 7,
+      "PosX": 1,
       "PosY": 7
     },
     {
@@ -490,12 +498,6 @@
       "PosX": 17,
       "PosY": 0,
       "CharRepresentation": "☰"
-
-    },
-    {
-      "Type": 6,
-      "PosX": 20,
-      "PosY": 2
 
     },
     {
