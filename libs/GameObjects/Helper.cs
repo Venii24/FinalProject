@@ -1,38 +1,61 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using Newtonsoft.Json;
+
 namespace libs
 {
     public class Helper : GameObject
     {
         public Helper() : base()
         {
-
             Type = GameObjectType.Helper;
             CharRepresentation = '?';
             Color = ConsoleColor.DarkGreen;
 
-             //TODO Import and add those from JSON
-                    DialogNode node1 = new DialogNode("Hello, do you need some help?");
-                    DialogNode node2 = new DialogNode("Sure, did you already find the key?");
-                    DialogNode node3 = new DialogNode("You should look for the key first. It is hidden in the room, then you can open the door.");
-                    DialogNode node4 = new DialogNode("Great! Look for the door and open it with the key.");
-                    DialogNode node5 = new DialogNode("Goodbye!");
+            // Load dialog texts from JSON
+            string jsonFilePath = Path.Combine("..", "libs", "dialog.json");
+            string jsonString = File.ReadAllText(jsonFilePath);
+            DialogTexts dialogTexts = JsonConvert.DeserializeObject<DialogTexts>(jsonString);
 
-                    // Adding responses to nodes
-                    node1.AddResponse("Yes please, I do not know what to do", node2);
-                    node1.AddResponse("No everything is fine, thanks", node5);
+            // Initialize dialog nodes
+            Dictionary<string, DialogNode> nodesDict = new Dictionary<string, DialogNode>();
+            foreach (var nodeData in dialogTexts.Nodes)
+            {
+                nodesDict[nodeData.DialogID] = new DialogNode(nodeData.Text);
+            }
 
-                    node2.AddResponse("Yes", node4);
-                    node2.AddResponse("No", node3);
+            // Adding responses to nodes
+            foreach (var nodeData in dialogTexts.Nodes)
+            {
+                DialogNode currentNode = nodesDict[nodeData.DialogID];
+                foreach (var response in nodeData.Responses)
+                {
+                    currentNode.AddResponse(response.ResponseText, nodesDict[response.NextNodeID]);
+                }
+            }
 
-                    node3.AddResponse("Okay, goodbye.", node5);
-                    node4.AddResponse("Thanks!", node5);
+            List<DialogNode> dialogNodes = new List<DialogNode>(nodesDict.Values);
 
-                    dialogNodes.Add(node1);
-                    dialogNodes.Add(node2);
-                    dialogNodes.Add(node3);
-                    dialogNodes.Add(node4);
-                    dialogNodes.Add(node5);
-
-                    dialog = new Dialog(node1);
+            dialog = new Dialog(nodesDict["1"]); // Start dialog
         }
+    }
+
+    public class DialogTexts
+    {
+        public List<DialogTextNode> Nodes { get; set; }
+    }
+
+    public class DialogTextNode
+    {
+        public string DialogID { get; set; }
+        public string Text { get; set; }
+        public List<ResponseData> Responses { get; set; }
+    }
+
+    public class ResponseData
+    {
+        public string ResponseText { get; set; }
+        public string NextNodeID { get; set; }
     }
 }

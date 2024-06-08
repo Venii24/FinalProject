@@ -1,50 +1,57 @@
-[
-  {
-    "Text": "Hello, how can I help you?",
-    "Responses": [
-      {
-        "ResponseText": "I need some information.",
-        "NextNodeIndex": 1
-      },
-      {
-        "ResponseText": "Nothing, thanks.",
-        "NextNodeIndex": 4
-      }
-    ]
-  },
-  {
-    "Text": "Sure, what information do you need?",
-    "Responses": [
-      {
-        "ResponseText": "Tell me more.",
-        "NextNodeIndex": 3
-      },
-      {
-        "ResponseText": "Nevermind.",
-        "NextNodeIndex": 2
-      }
-    ]
-  },
-  {
-    "Text": "Sorry, I can't help with that.",
-    "Responses": [
-      {
-        "ResponseText": "Okay, goodbye.",
-        "NextNodeIndex": 4
-      }
-    ]
-  },
-  {
-    "Text": "Here is the information you requested.",
-    "Responses": [
-      {
-        "ResponseText": "Thanks!",
-        "NextNodeIndex": 4
-      }
-    ]
-  },
-  {
-    "Text": "Goodbye!",
-    "Responses": []
-  }
-]
+{
+  "nodes": [
+    {
+      "dialogID": "1",
+      "text": "Hello, do you need some help?",
+      "responses": [
+        {
+          "responseText": "Yes please, I do not know what to do",
+          "nextNodeID": "2"
+        },
+        {
+          "responseText": "No everything is fine, thanks",
+          "nextNodeID": "5"
+        }
+      ]
+    },
+    {
+      "dialogID": "2",
+      "text": "Sure, did you already find the key?",
+      "responses": [
+        {
+          "responseText": "Yes",
+          "nextNodeID": "4"
+        },
+        {
+          "responseText": "No",
+          "nextNodeID": "3"
+        }
+      ]
+    },
+    {
+      "dialogID": "3",
+      "text": "You should look for the key first. It is hidden in the room, then you can open the door.",
+      "responses": [
+        {
+          "responseText": "Okay, goodbye.",
+          "nextNodeID": "5"
+        }
+      ]
+    },
+    {
+      "dialogID": "4",
+      "text": "Great! Look for the door and open it with the key.",
+      "responses": [
+        {
+          "responseText": "Thanks!",
+          "nextNodeID": "5"
+        }
+      ]
+    },
+    {
+      "dialogID": "5",
+      "text": "Goodbye!",
+      "responses": []
+    }
+  ]
+}
