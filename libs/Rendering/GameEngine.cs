@@ -354,7 +354,7 @@ public void CheckWallCollision(GameObject player, Direction playerDirection)
                     return false; // Return false to indicate that the level cannot be finished due to error
                 }
 //                 Console.WriteLine($"Player has key: {player.HasKey}");
-                 Console.WriteLine($"Current Level Index: {currentLevelIndex}");
+//                  Console.WriteLine($"Current Level Index: {currentLevelIndex}");
 //                 Console.WriteLine($"Level File Paths Length: {levelFilePaths.Length}");
 
                 // Check if the player is on the goal and has the key
