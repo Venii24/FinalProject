@@ -14,6 +14,8 @@ public sealed class GameEngine
     private Stack<GameState> gameStates;
     private int currentLevelIndex = 0; // Assume the initial level index is 0
     private string[] levelFilePaths = { "level00.json", "level01.json", "level02.json" };
+    private bool timerStopped = false;
+
 
     private int moveCount;
      private DateTime startTime;
@@ -359,15 +361,19 @@ public void CheckWallCollision(GameObject player, Direction playerDirection)
 
                 // Check if the player is on the goal and has the key
                if (player.PosX == goal.PosX && player.PosY == goal.PosY && !player.HasKey)
-                {
-                    if (currentLevelIndex == 3) {
-                        dialogMessage = "Congratulations! You have escaped!";
-                    }
-                    else {
-                        dialogMessage = "You need to find the key to unlock the door!";
-                    }
-                    return false;
-                }
+               {
+                   if (currentLevelIndex == 3) {
+                       dialogMessage = "Congratulations! You have escaped!";
+                       // Stop the timer
+                       timerStopped = true;
+                   }
+                   else {
+                       dialogMessage = "You need to find the key to unlock the door!";
+                   }
+                   return false;
+               }
+
+
 
                 else if (player.PosX == goal.PosX && player.PosY == goal.PosY && player.HasKey)
                 {
@@ -458,9 +464,12 @@ public void CheckWallCollision(GameObject player, Direction playerDirection)
     {
         try
         {
-            // Calculate remaining time
-            TimeSpan elapsed = DateTime.Now - startTime;
-            countdown = countdownDuration - elapsed;
+            // Only update the countdown if the timer is not stopped
+            if (!timerStopped)
+            {
+                TimeSpan elapsed = DateTime.Now - startTime;
+                countdown = countdownDuration - elapsed;
+            }
 
             // Determine text color based on remaining time
             ConsoleColor textColor;

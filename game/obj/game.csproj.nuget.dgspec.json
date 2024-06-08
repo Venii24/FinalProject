@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\stefa\\OneDrive\\Dokumente\\FH StPoelten BCC\\4. Semester\\CD\\FinalProject\\FinalProject\\game\\game.csproj": {}
+    "C:\\Users\\pamme\\OneDrive - Fachhochschule St. Pölten\\1_FH_backup\\SEM4\\c#\\final\\game\\game.csproj": {}
   },
   "projects": {
-    "C:\\Users\\stefa\\OneDrive\\Dokumente\\FH StPoelten BCC\\4. Semester\\CD\\FinalProject\\FinalProject\\game\\game.csproj": {
+    "C:\\Users\\pamme\\OneDrive - Fachhochschule St. Pölten\\1_FH_backup\\SEM4\\c#\\final\\game\\game.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\stefa\\OneDrive\\Dokumente\\FH StPoelten BCC\\4. Semester\\CD\\FinalProject\\FinalProject\\game\\game.csproj",
+        "projectUniqueName": "C:\\Users\\pamme\\OneDrive - Fachhochschule St. Pölten\\1_FH_backup\\SEM4\\c#\\final\\game\\game.csproj",
         "projectName": "game",
-        "projectPath": "C:\\Users\\stefa\\OneDrive\\Dokumente\\FH StPoelten BCC\\4. Semester\\CD\\FinalProject\\FinalProject\\game\\game.csproj",
-        "packagesPath": "C:\\Users\\stefa\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\stefa\\OneDrive\\Dokumente\\FH StPoelten BCC\\4. Semester\\CD\\FinalProject\\FinalProject\\game\\obj\\",
+        "projectPath": "C:\\Users\\pamme\\OneDrive - Fachhochschule St. Pölten\\1_FH_backup\\SEM4\\c#\\final\\game\\game.csproj",
+        "packagesPath": "C:\\Users\\pamme\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\pamme\\OneDrive - Fachhochschule St. Pölten\\1_FH_backup\\SEM4\\c#\\final\\game\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\stefa\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\pamme\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -26,8 +26,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\stefa\\OneDrive\\Dokumente\\FH StPoelten BCC\\4. Semester\\CD\\FinalProject\\FinalProject\\libs\\libs.csproj": {
-                "projectPath": "C:\\Users\\stefa\\OneDrive\\Dokumente\\FH StPoelten BCC\\4. Semester\\CD\\FinalProject\\FinalProject\\libs\\libs.csproj"
+              "C:\\Users\\pamme\\OneDrive - Fachhochschule St. Pölten\\1_FH_backup\\SEM4\\c#\\final\\libs\\libs.csproj": {
+                "projectPath": "C:\\Users\\pamme\\OneDrive - Fachhochschule St. Pölten\\1_FH_backup\\SEM4\\c#\\final\\libs\\libs.csproj"
               }
             }
           }
@@ -66,17 +66,17 @@
         }
       }
     },
-    "C:\\Users\\stefa\\OneDrive\\Dokumente\\FH StPoelten BCC\\4. Semester\\CD\\FinalProject\\FinalProject\\libs\\libs.csproj": {
+    "C:\\Users\\pamme\\OneDrive - Fachhochschule St. Pölten\\1_FH_backup\\SEM4\\c#\\final\\libs\\libs.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\stefa\\OneDrive\\Dokumente\\FH StPoelten BCC\\4. Semester\\CD\\FinalProject\\FinalProject\\libs\\libs.csproj",
+        "projectUniqueName": "C:\\Users\\pamme\\OneDrive - Fachhochschule St. Pölten\\1_FH_backup\\SEM4\\c#\\final\\libs\\libs.csproj",
         "projectName": "libs",
-        "projectPath": "C:\\Users\\stefa\\OneDrive\\Dokumente\\FH StPoelten BCC\\4. Semester\\CD\\FinalProject\\FinalProject\\libs\\libs.csproj",
-        "packagesPath": "C:\\Users\\stefa\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\stefa\\OneDrive\\Dokumente\\FH StPoelten BCC\\4. Semester\\CD\\FinalProject\\FinalProject\\libs\\obj\\",
+        "projectPath": "C:\\Users\\pamme\\OneDrive - Fachhochschule St. Pölten\\1_FH_backup\\SEM4\\c#\\final\\libs\\libs.csproj",
+        "packagesPath": "C:\\Users\\pamme\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\pamme\\OneDrive - Fachhochschule St. Pölten\\1_FH_backup\\SEM4\\c#\\final\\libs\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\stefa\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\pamme\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
